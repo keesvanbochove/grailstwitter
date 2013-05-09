@@ -1,9 +1,9 @@
 package org.grails.twitter
 
-import org.grails.twitter.auth.Person
-
 import grails.plugin.cache.CacheEvict
 import grails.plugin.cache.Cacheable
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import org.grails.twitter.auth.Person
 
 class TimelineService {
 
@@ -11,6 +11,12 @@ class TimelineService {
 	
     @CacheEvict('timeline')
     void clearTimelineCacheForUser(String username) {}
+
+    def getTimeline() {
+        println("test timeline")
+        def messages = Status.findAll("from Status as s order by s.dateCreated desc")
+        messages
+    }
     
     @Cacheable('timeline')
     def getTimelineForUser(String username) {
