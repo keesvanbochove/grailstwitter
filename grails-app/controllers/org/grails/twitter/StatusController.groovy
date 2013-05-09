@@ -20,7 +20,7 @@ class StatusController {
         statusService.updateStatus message
         def messages = timelineService.getTimelineForUser(springSecurityService.principal.username)
         
-        def content = twitter.renderMessages messages: messages
+		def content = twitter.renderMessages messages: messages
         render content
     }
 
