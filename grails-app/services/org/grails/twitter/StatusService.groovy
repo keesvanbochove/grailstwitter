@@ -29,13 +29,27 @@ class StatusService {
         timelineService.clearTimelineCacheForUser(status.author.username)
     }
 
-    void follow(long personId) {
-        def person = Person.get(personId)
+    void follow(String username) {
+        def person = findPersonByUsername(username)
         if (person) {
             def currentUser = lookupCurrentPerson()
             currentUser.addToFollowed(person)
             timelineService.clearTimelineCacheForUser(currentUser.username)
         }
+    }
+
+    void unFollow(String username) {
+        def person = findPersonByUsername(username)
+        if (person) {
+            def currentUser = lookupCurrentPerson()
+            currentUser.removeFromFollowed(person)
+            timelineService.clearTimelineCacheForUser(currentUser.username)
+        }
+    }
+
+    def findPersonByUsername(String username) {
+        Person person = Person.findByUsername(username)
+        person
     }
 
     private lookupCurrentPerson() {

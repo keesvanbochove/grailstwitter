@@ -13,10 +13,19 @@
             <div id="spinner" class="spinner" style="display:none;">
                 <img src="${resource(dir:'images',file:'spinner.gif')}" alt="code:'spinner.alt',default:'Loading...')}" />
             </div>
-            <div id="grailsLogo"><a href="http://grails.org"><img src="${resource(dir:'images',file:'grails_logo.png')}" alt="Grails" border="0" /></a></div>
-            <sec:ifLoggedIn>
-                <strong>Welcome <sec:username/></strong> (<g:link controller="logout">logout</g:link>)<br/><br/>
-            </sec:ifLoggedIn>
+            <div id="nav">
+                <ul>
+                    <li><g:link controller="home">Home</g:link></li>
+                    <sec:ifLoggedIn>
+                        <li><g:link controller="status">Update status</g:link></li>
+                        <li><a href="/grailstwitter/person/${sec.username()}">My page</a></li>
+                        <strong><sec:username/></strong> (<g:link controller="logout">logout</g:link>)<br/><br/>
+                    </sec:ifLoggedIn>
+                    <sec:ifNotLoggedIn>
+                        <li><g:link url="[controller: 'login', action:'auth']">Login</g:link></li>
+                    </sec:ifNotLoggedIn>
+                </ul>
+            </div>
             <g:layoutBody />
         </div>
 

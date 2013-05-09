@@ -1,13 +1,11 @@
 package grailstwitter
 
-import grails.plugins.springsecurity.Secured
-
 class HomeController {
-	
+
 	def statusService
 	def timelineService
-	def springSecurityService
-	
+    def springSecurityService
+
     def index() {
         def messages = timelineService.getTimeline()
 		println(messages)
@@ -16,9 +14,21 @@ class HomeController {
 
     def user(String username) {
         def messages = timelineService.getTimelineForUser(username)
-        [statusMessages: messages]
+        def person = statusService.findPersonByUsername(username)
+        boolean isFollowing;
+        if(springSecurityService.isLoggedIn()) {
+            isFollowing = springSecurityService.currentUser.followed.contains(person)
+        }
+        [statusMessages: messages, person: person, isFollowing: isFollowing]
     }
 
-    def test() {
+    def follow(String username) {
+        statusService.follow(username)
+        redirect controller: 'home',action: 'user', params: [username: username]
+    }
+
+    def unfollow(String username) {
+        statusService.unFollow(username)
+        redirect controller: 'home',action: 'user', params: [username: username]
     }
 }
